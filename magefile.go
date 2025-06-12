@@ -43,17 +43,41 @@ func Clean() error {
 	return nil
 }
 
-// Test runs the test suite
+// Test runs only unit tests in the internal/provider package
 func Test() error {
-	fmt.Println("Running tests...")
-	return sh.Run("go", "test", "-count=1", "-parallel=4", "./...")
+	fmt.Println("Running unit tests...")
+	return sh.Run("go", "test", "-v", "-count=1", "-parallel=4", "./internal/provider")
 }
 
-// TestAcc runs acceptance tests
+// TestAll runs all tests including any in subdirectories
+func TestAll() error {
+	fmt.Println("Running all tests...")
+	return sh.Run("go", "test", "-v", "-count=1", "-parallel=4", "./...")
+}
+
+// TestAcc runs acceptance tests (requires TF_ACC=1)
 func TestAcc() error {
 	fmt.Println("Running acceptance tests...")
 	env := map[string]string{"TF_ACC": "1"}
-	return sh.RunWith(env, "go", "test", "-count=1", "-parallel=4", "-timeout", "10m", "-v", "./...")
+	return sh.RunWith(env, "go", "test", "-v", "-count=1", "-parallel=4", "-timeout", "10m", "./...")
+}
+
+// TestUnit runs only unit tests (same as Test, but explicit)
+func TestUnit() error {
+	fmt.Println("Running unit tests only...")
+	return sh.Run("go", "test", "-v", "-count=1", "-parallel=4", "-short", "./internal/provider")
+}
+
+// TestCoverage runs tests with coverage report
+func TestCoverage() error {
+	fmt.Println("Running tests with coverage...")
+	return sh.Run("go", "test", "-v", "-coverprofile=coverage.out", "-covermode=atomic", "./internal/provider")
+}
+
+// TestBench runs benchmark tests
+func TestBench() error {
+	fmt.Println("Running benchmark tests...")
+	return sh.Run("go", "test", "-v", "-bench=.", "-benchmem", "./internal/provider")
 }
 
 // Install builds and installs the provider to Go bin directory
