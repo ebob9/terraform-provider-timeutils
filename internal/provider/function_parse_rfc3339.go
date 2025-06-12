@@ -22,7 +22,6 @@ func NewParseRFC3339Function() function.Function {
 
 func (f *ParseRFC3339Function) Metadata(ctx context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
 	resp.Name = "parse_rfc3339"
-	resp.Description = "Parse an RFC3339 timestamp and return components"
 }
 
 func (f *ParseRFC3339Function) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {

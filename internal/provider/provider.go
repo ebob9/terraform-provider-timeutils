@@ -45,10 +45,10 @@ func (p *TimeUtilsProvider) DataSources(ctx context.Context) []func() datasource
 
 func (p *TimeUtilsProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
-		NewUnixTimestampFunction,
-		NewStrftimeFunction,
-		NewDaysDifferenceFunction,
-		NewParseRFC3339Function,
+		func() function.Function { return NewUnixTimestampFunction() },
+		func() function.Function { return NewStrftimeFunction() },
+		func() function.Function { return NewDaysDifferenceFunction() },
+		func() function.Function { return NewParseRFC3339Function() },
 	}
 }
 

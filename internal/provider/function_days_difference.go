@@ -22,7 +22,6 @@ func NewDaysDifferenceFunction() function.Function {
 
 func (f *DaysDifferenceFunction) Metadata(ctx context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
 	resp.Name = "days_difference"
-	resp.Description = "Calculate the number of days between two RFC3339 timestamps"
 }
 
 func (f *DaysDifferenceFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
@@ -45,10 +44,9 @@ func (f *DaysDifferenceFunction) Definition(ctx context.Context, req function.De
 
 func (f *DaysDifferenceFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var startTimestamp, endTimestamp string
-	resp.Error = function.ConcatFuncErrors(
-		req.Arguments.Get(ctx, &startTimestamp),
-		req.Arguments.Get(ctx, &endTimestamp),
-	)
+
+	// Get both arguments at once
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &startTimestamp, &endTimestamp))
 	if resp.Error != nil {
 		return
 	}

@@ -5,7 +5,6 @@ package provider
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -23,7 +22,6 @@ func NewStrftimeFunction() function.Function {
 
 func (f *StrftimeFunction) Metadata(ctx context.Context, req function.MetadataRequest, resp *function.MetadataResponse) {
 	resp.Name = "strftime"
-	resp.Description = "Format an RFC3339 timestamp using strftime format specifiers"
 }
 
 func (f *StrftimeFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
@@ -46,10 +44,9 @@ func (f *StrftimeFunction) Definition(ctx context.Context, req function.Definiti
 
 func (f *StrftimeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var format, timestamp string
-	resp.Error = function.ConcatFuncErrors(
-		req.Arguments.Get(ctx, &format),
-		req.Arguments.Get(ctx, &timestamp),
-	)
+
+	// Get both arguments at once
+	resp.Error = function.ConcatFuncErrors(req.Arguments.Get(ctx, &format, &timestamp))
 	if resp.Error != nil {
 		return
 	}

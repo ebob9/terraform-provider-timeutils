@@ -17,14 +17,14 @@ This provider adds the following functions to Terraform:
 
 1. **Clone and build the provider:**
    ```bash
-   git clone <your-repo>
+   git clone https://github.com/ebob9/terraform-provider-timeutils.git
    cd terraform-provider-timeutils
-   make install
+   mage devlocal 
    ```
 
 2. **The provider will be installed to:**
    ```
-   ~/go/bin
+   ~/.terraform.d/plugins/registry.terraform.io/ebob9/timeutils/0.1.0/<OS>_<ARCH>/
    ```
 
 ### Method 2: Manual Install
@@ -34,14 +34,14 @@ This provider adds the following functions to Terraform:
    go build -o terraform-provider-timeutils
    ```
 
-2. **Create the go bin directory:**
+2. **Create the plugin directory:**
    ```bash
-   mkdir -p ~/go/bin
+   mkdir -p ~/.terraform.d/plugins/registry.terraform.io/ebob9/timeutils/0.1.0/$(go env GOOS)_$(go env GOARCH)/
    ```
 
 3. **Copy the binary:**
    ```bash
-   cp terraform-provider-timeutils ~/go/bin
+   cp terraform-provider-timeutils ~/.terraform.d/plugins/registry.terraform.io/your-org/timeutils/0.1.0/$(go env GOOS)_$(go env GOARCH)/
    ```
 
 ### Method 3: Cross-platform Release Build
@@ -58,12 +58,12 @@ This creates binaries for multiple platforms in the `./bin/` directory.
 
 ```hcl
 terraform {
-  required_providers {
-    timeutils = {
-      source = "ebob9/timeutils"
-      version = "~> 0.1"
-    }
-  }
+   required_providers {
+      timeutils = {
+         source = "ebob9/timeutils"
+         version = "~> 0.1"
+      }
+   }
 }
 
 provider "timeutils" {}
@@ -181,37 +181,74 @@ output "days_between" {
 
 ### Prerequisites
 
-- Go 1.23+
-- Terraform 1.0+
+- Go 1.21+
+- [Mage](https://magefile.org/) - Install with: `go install github.com/magefile/mage@latest`
+- Terraform 1.0+ or OpenTofu 1.6+
 
-### Building
-
-```bash
-go mod tidy
-go build -o terraform-provider-timeutils
-```
-
-### Testing
+### Available Mage Targets
 
 ```bash
-go test ./...
+# Installation
+mage install      # Build and install to Go bin directory (default)
+mage installlocal # Install to Terraform plugins directory
+
+# Development
+mage dev          # Full development cycle (tidy, check, install to Go bin)
+mage devlocal     # Full development cycle for Terraform (install locally)
+mage build        # Build the provider binary
+mage clean        # Remove build artifacts
+
+# Code Quality
+mage fmt          # Format Go code
+mage vet          # Run go vet
+mage test         # Run unit tests
+mage testacc      # Run acceptance tests
+mage check        # Run fmt, vet, and test
+
+# Dependencies
+mage tidy         # Run go mod tidy
+
+# Release
+mage release      # Build binaries for all platforms
 ```
 
-### Local Testing
+### Quick Start Development
 
-1. Build and install the provider locally:
+1. **Set up the development environment:**
    ```bash
-   make install
+   git clone https://github.com/ebob9/terraform-provider-timeutils
+   cd terraform-provider-timeutils
+   mage dev
    ```
 
-2. Create a test Terraform configuration using the provider
+   This will automatically detect your OS and architecture and install to the appropriate directory.
 
-3. Run terraform commands:
+2. **Create a test Terraform configuration using the provider**
+
+3. **Test your changes:**
    ```bash
    terraform init
    terraform plan
    terraform apply
    ```
+
+### Platform Detection
+
+The build system automatically detects your platform:
+
+```bash
+mage install 
+```
+
+### Testing
+
+```bash
+# Run unit tests
+mage test
+
+# Run acceptance tests
+mage testacc
+```
 
 ## Why This Provider?
 
