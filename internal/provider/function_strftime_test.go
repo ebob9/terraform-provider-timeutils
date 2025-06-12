@@ -102,7 +102,12 @@ func TestStrftimeFunction(t *testing.T) {
 			}
 
 			resultValue := resp.Result.Value()
-			result := resultValue.(types.String)
+			result, ok := resultValue.(types.String)
+			if !ok {
+				t.Errorf("Expected types.String, got %T", resultValue)
+				return
+			}
+
 			if result.ValueString() != tc.expected {
 				t.Errorf("Expected %q, got %q", tc.expected, result.ValueString())
 			}
