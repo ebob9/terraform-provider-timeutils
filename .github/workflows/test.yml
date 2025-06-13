@@ -46,6 +46,12 @@ jobs:
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_wrapper: false
+      - name: Install Mage
+        uses: magefile/mage-action@v3
+        with:
+          version: latest
+          install-only: true
+
       - run: make generate
       - name: git diff
         run: |

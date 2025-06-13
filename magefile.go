@@ -254,3 +254,13 @@ func DevLocal() error {
 	mg.Deps(Tidy, Check, InstallLocal)
 	return nil
 }
+
+func Generate() error {
+	fmt.Println("Running go generate...")
+	if err := sh.Run("go", "generate", "./..."); err != nil {
+		return err
+	}
+
+	fmt.Println("Formatting generated code...")
+	return Fmt()
+}
