@@ -3,7 +3,7 @@ module github.com/ebob9/terraform-provider-timeutils
 go 1.23.7
 
 require (
-	github.com/hashicorp/terraform-plugin-framework v1.15.0
+	github.com/hashicorp/terraform-plugin-framework v1.15.1
 	github.com/lestrrat-go/strftime v1.1.0
 	github.com/magefile/mage v1.15.0
 )
