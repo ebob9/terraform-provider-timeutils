@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/hashicorp/terraform-plugin-framework v1.17.0
-	github.com/lestrrat-go/strftime v1.1.0
+	github.com/lestrrat-go/strftime v1.1.1
 	github.com/magefile/mage v1.15.0
 )
 
