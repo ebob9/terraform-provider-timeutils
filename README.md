@@ -258,13 +258,6 @@ Terraform's built-in time functions are limited:
 - No precise date arithmetic
 - Limited date manipulation capabilities
 
-This provider fills those gaps by providing:
-- ✅ Precise date calculations
-- ✅ Unix timestamp support
-- ✅ Full strftime formatting
-- ✅ RFC3339 parsing capabilities
-- ✅ Cross-platform compatibility
-
 ## License
 
 MPL-2.0
